@@ -1,1 +1,2 @@
-tyhyugygy
+public class 2048{
+}
