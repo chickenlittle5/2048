@@ -2,6 +2,6 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class ScorePanel {
+public class ScorePanel extends JPanel implements ActionListener{
     
 }

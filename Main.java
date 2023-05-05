@@ -2,10 +2,11 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class main {
+public class Main {
 
     public static void main(String[] args) {
 
-        
+        new MyFrame();
+    	
     }
 }
