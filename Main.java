@@ -1,12 +1,6 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-
 public class Main {
-
-    public static void main(String[] args) {
-
-        new MyFrame();
-    	
-    }
+	public static void main(String[] args) {
+		Game b = new Game();
+		b.setVisible(true);
+	}
 }
