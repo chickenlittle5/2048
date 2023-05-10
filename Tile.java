@@ -73,7 +73,7 @@ public class Tile {
 			FontMetrics fm = g2d.getFontMetrics(f);
 			g2d.setFont(f);
 			g2d.setColor(textColor);
-			g2d.drawString(toString(), x + (size - fm.stringWidth(toString()))/2, fm.getAscent() + y + (size - fm.getHeight())/2);
+			g2d.drawString(toString(), x + (size - fm.stringWidth(toString()))/2, fm.getAscent()*6/5 + y + (size - fm.getHeight())/2);
 		}
 	}
 
