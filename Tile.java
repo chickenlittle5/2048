@@ -5,15 +5,15 @@ public class Tile {
 		new Color(204,192,179), // default color
 		new Color(238,228,218), // 2
 		new Color(237,224,200), // 4
-		new Color(242,177,121), // ...
-		new Color(245,149,99),
-		new Color(246,124,95),
-		new Color(246,94,59),
-		new Color(237,207,114),
-		new Color(237,204,97),
-		new Color(237,200,80,255),
-		new Color(237,197,63,255),
-		new Color(237,194,46,255),
+		new Color(242,177,121), // 8
+		new Color(245,149,99), // 16
+		new Color(246,124,95), // 32
+		new Color(246,94,59), // 64
+		new Color(237,207,114), // 128
+		new Color(237,204,97), // 256
+		new Color(237,200,80,255), // 512
+		new Color(237,197,63,255), // 1024
+		new Color(237,194,46,255), // 2048
 		new Color(62,57,51) // >2048
 	};
 	private static final Color[] textColors = {
