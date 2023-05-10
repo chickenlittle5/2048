@@ -24,6 +24,7 @@ public class Grid extends Canvas {
 	
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		g.setColor(canvasColor);
 		g2d.fillRoundRect(0, 0, getWidth(), getHeight(), getWidth()/20, getHeight()/20); // corner radii = 5%

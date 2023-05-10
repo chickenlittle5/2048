@@ -1,5 +1,4 @@
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 
 public class Tile {
 	private static final Color[] colors = {
@@ -17,36 +16,51 @@ public class Tile {
 		new Color(237,194,46,255),
 		new Color(62,57,51) // >2048
 	};
+	private static final Color[] textColors = {
+		new Color(119, 110, 101), // value <= 4
+		new Color(249, 246, 242)
+	};
 	
-	private int power;
+	private int value;
 	
 	private int x;
 	private int y;
 	private int size;
+
 	private Color color;
+	private Color textColor;
 	
-	public Tile(int power, int x, int y, int size) {
-		setPower(power);
+	public static int logBase2(int value) {
+		if (value <= 1)
+			return 0;
+		return 1 + logBase2(value/2);
+	}
+	
+	public Tile(int value, int x, int y, int size) {
+		int[] rand = {0,2,8,16,512,2048,4096};
+		setValue(rand[(int)(Math.random()*rand.length)]);
 		this.x = x;
 		this.y = y;
 		this.size = size;
 	}
 	
 	public int getPower() {
-		return power;
+		return logBase2(value);
 	}
 	
-	public Color getColor() {
-		return color;
+	public int getValue() {
+		return value;
 	}
 	
-	public void setPower(int power) {
-		this.power = power;
+	public void setValue(int value) {
+		this.value = value;
 		setColor();
 	}
 	
 	public void setColor() {
-		color = power < colors.length-1 ? colors[power] : colors[colors.length-1];
+		int power = getPower();
+		color = power < colors.length ? colors[power] : colors[colors.length-1];
+		textColor = power <= 2 ? textColors[0] : textColors[1];
 	}
 	
 	public void draw(Graphics2D g2d) {
@@ -54,9 +68,16 @@ public class Tile {
 		g2d.fillRoundRect(x, y, size, size, size/5, size/5); // corner radii = 20%
 		g2d.drawRoundRect(x, y, size, size, size/5, size/5);
 		
+		if (value > 0) {
+			Font f = new Font("Helvetica", Font.BOLD, size*1/2 - (toString().length()-1)*3); // smaller for larger numbers
+			FontMetrics fm = g2d.getFontMetrics(f);
+			g2d.setFont(f);
+			g2d.setColor(textColor);
+			g2d.drawString(toString(), x + (size - fm.stringWidth(toString()))/2, fm.getAscent() + y + (size - fm.getHeight())/2);
+		}
 	}
 
 	public String toString() {
-		return "" + Math.pow(2, power);
+		return "" + value;
 	}
 }
