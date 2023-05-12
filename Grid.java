@@ -16,6 +16,20 @@ public class Grid extends Canvas {
 			}
 		}
 		
+		
+		//Puts 2 random blocks at the start of the game
+		int x1 = (int)(Math.random()*gridSegments);
+		int y1 = (int)(Math.random()*gridSegments);
+		grid[x1][y1].setRandom();
+		int x2 = (int)(Math.random()*gridSegments);
+		int y2 = (int)(Math.random()*gridSegments);
+		while (x1 == x2 && y1 == y2) {
+			x2 = (int)(Math.random()*gridSegments);
+			y2 = (int)(Math.random()*gridSegments);
+		}
+		grid[x2][y2].setRandom();
+		
+		
 		Dimension dimension = new Dimension(gridSize, gridSize);
 		setMinimumSize(dimension);
 		setMaximumSize(dimension);
