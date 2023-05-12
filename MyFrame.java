@@ -10,10 +10,12 @@ public class MyFrame extends JFrame {
 		getContentPane().setBackground(new java.awt.Color(250,248,239,255));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JLabel lbl = new JLabel ( "2048" );
+		JLabel title = new JLabel ( "2048" );
 		
 	     	setLayout( new FlowLayout() );
-	    	add( lbl );
+	     	title.setHorizontalTextPosition(JLabel.CENTER);
+	     	title.setFont(new Font("Verdana", Font.PLAIN, 30));
+	    	add( title );
 
 		setSize(600, 800);
 		setVisible(true);
