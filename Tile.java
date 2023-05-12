@@ -57,6 +57,13 @@ public class Tile {
 		setColor();
 	}
 	
+	//Sets a random value of either 2 or 4
+	public void setRandom() {
+		int[] rand = {2,4};
+		setValue(rand[(int)(Math.random()*rand.length)]);
+		
+	}
+	
 	public void setColor() {
 		int power = getPower();
 		color = power < colors.length ? colors[power] : colors[colors.length-1];
