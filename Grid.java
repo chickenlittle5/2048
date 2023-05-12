@@ -6,6 +6,16 @@ public class Grid extends Canvas {
 
 	private Tile[][] grid;
 	
+	//returns the grid
+	public Tile[][] getGrid () {
+		return grid;
+	}
+	//set a value in the grid
+	public void setGrid (int val, int r, int c) {
+		grid[r][c].setValue(val);
+	}
+	
+	
 	public Grid(int gridSize) {
 		int tileSize = gridSize / (gridSegments + 1);
 		
