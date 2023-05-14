@@ -1,63 +1,163 @@
+import java.util.*;
 import java.awt.*;
+import java.awt.image.*;
+import javax.swing.*;
 
-public class Grid extends Canvas {
-	private static final int gridSegments = 4;
-	private static final Color canvasColor = new Color(187,173,160);
+public class Grid extends JPanel {
+	private static final int GRID_SEGMENTS = 4;
+	private static final Color BACKGROUND_COLOR = new Color(187,173,160);
 
 	private Tile[][] grid;
+	private BufferedImage image;
 	
-	//returns the grid
-	public Tile[][] getGrid () {
-		return grid;
-	}
-	//set a value in the grid
-	public void setGrid (int val, int r, int c) {
-		grid[r][c].setValue(val);
-	}
-	
-	
-	public Grid(int gridSize) {
-		int tileSize = gridSize / (gridSegments + 1);
-		
-		grid = new Tile[gridSegments][gridSegments];
-		for (int r = 0; r < gridSegments; r++) {
-			for (int c = 0; c < gridSegments; c++) {
+	public Grid(int size) {
+		int tileSize = size / (GRID_SEGMENTS + 1);
+		grid = new Tile[GRID_SEGMENTS][GRID_SEGMENTS];
+		for (int r = 0; r < GRID_SEGMENTS; r++) {
+			for (int c = 0; c < GRID_SEGMENTS; c++) {
 				grid[r][c] = new Tile(0, c*tileSize + (c+1)*tileSize/5, r*tileSize + (r+1)*tileSize/5, tileSize);
 			}
 		}
-		
-		
-		//Puts 2 random blocks at the start of the game
-		int x1 = (int)(Math.random()*gridSegments);
-		int y1 = (int)(Math.random()*gridSegments);
-		grid[x1][y1].setRandom();
-		int x2 = (int)(Math.random()*gridSegments);
-		int y2 = (int)(Math.random()*gridSegments);
-		while (x1 == x2 && y1 == y2) {
-			x2 = (int)(Math.random()*gridSegments);
-			y2 = (int)(Math.random()*gridSegments);
-		}
-		grid[x2][y2].setRandom();
-		
-		
-		Dimension dimension = new Dimension(gridSize, gridSize);
+		spawn();
+		spawn();
+
+		image = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
+		Dimension dimension = new Dimension(size, size);
 		setMinimumSize(dimension);
 		setMaximumSize(dimension);
 		setPreferredSize(dimension);
 	}
-	
-	public void paint(Graphics g) {
-		Graphics2D g2d = (Graphics2D) g;
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		g.setColor(canvasColor);
+	public ArrayList<Tile> getRow(int index) {
+		return new ArrayList<Tile>(Arrays.asList(grid[index]));
+	}
+
+	public ArrayList<Tile> getColumn(int index) {
+		ArrayList<Tile> column = new ArrayList<Tile>();
+		for (int i = 0; i < GRID_SEGMENTS; i++) {
+			column.add(grid[i][index]);
+		}
+		return column;
+	}
+
+	public ArrayList<Tile> reverse(ArrayList<Tile> array) {
+		for (int i = 0; i < array.size()/2; i++) {
+			Tile temp = array.get(i);
+			array.set(i, array.get(array.size()-1-i));
+			array.set(array.size()-1-i, temp);
+
+		}
+		return array;
+	}
+
+	public boolean canMove() {
+		for (int r = 0; r < GRID_SEGMENTS; r++) {
+			for (int c = 0; c < GRID_SEGMENTS; c++) {
+				if (r < GRID_SEGMENTS-1 && grid[r+1][c].getValue() == grid[r][c].getValue() || c < GRID_SEGMENTS-1 && grid[r][c+1].getValue() == grid[r][c].getValue())
+					return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean spawn() {
+		ArrayList<Tile> empty = new ArrayList<Tile>();
+		for (int r = 0; r < GRID_SEGMENTS; r++) {
+			for (int c = 0; c < GRID_SEGMENTS; c++) {
+				if (grid[r][c].getValue() == 0)
+					empty.add(grid[r][c]);
+			}
+		}
+
+		if (empty.size() != 0) {
+			empty.get((int) (Math.random()*empty.size())).setValue(Math.random() < 0.9 ? 2 : 4); // 10% chance for a 4
+			return true;
+		}
+		return false;
+	}
+
+	public int[] shiftTiles(String direction) {
+		int score = 0;
+		boolean moved = false;
+		ArrayList<ArrayList<Tile>> segments = new ArrayList<ArrayList<Tile>>();
+
+		// Saves Tile references to an array, depending on orientation
+		if (direction.equals("UP")) {
+			for (int c = 0; c < GRID_SEGMENTS; c++) {
+				segments.add(getColumn(c));
+			}
+		} else if (direction.equals("DOWN")) {
+			for (int c = 0; c < GRID_SEGMENTS; c++) {
+				segments.add(reverse(getColumn(c)));
+			}
+		} else if (direction.equals("RIGHT")) {
+			for (int r = 0; r < GRID_SEGMENTS; r++) {
+				segments.add(reverse(getRow(r)));
+			}
+		} else {
+			for (int r = 0; r < GRID_SEGMENTS; r++) {
+				segments.add(getRow(r));
+			}
+		}
+		
+		for (ArrayList<Tile> segment: segments) {
+			// Shifts non-zero Tiles to Left
+			int j = 0;
+			for (int i = 0; i < segment.size(); i++) {
+				if (segment.get(i).getValue() != 0) {
+					if (j != i) {
+						segment.get(i).swap(segment.get(j));
+						moved = true;
+					}
+					j++;
+				}
+			}
+
+			int scoreAdd = 0;
+			// Merges Tile pairs, adds value of merged tile to score
+			for (int i = 0; i < segment.size()-1; i++) {
+				if (segment.get(i).getValue() == segment.get(i+1).getValue()) {
+					segment.get(i).merge(segment.get(i+1));
+					scoreAdd += segment.get(i).getValue();
+					i++;
+				}
+			}
+			if (scoreAdd == 0)
+				continue;
+
+			// Shifts non-zero Tiles to Left, filling up new gaps
+			j = 0;
+			for (int i = 0; i < segment.size(); i++) {
+				if (segment.get(i).getValue() != 0) {
+					if (j != i)
+						segment.get(i).swap(segment.get(j));
+					j++;
+				}
+			}
+			score += scoreAdd;
+		}
+
+		int[] returnArr = {score, moved ? 1 : 0};
+		return returnArr;
+	}
+	
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Graphics2D g2d = (Graphics2D) image.getGraphics();
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		
+		g2d.setColor(BACKGROUND_COLOR);
 		g2d.fillRoundRect(0, 0, getWidth(), getHeight(), getWidth()/20, getHeight()/20); // corner radii = 5%
+		g2d.drawRoundRect(0, 0, getWidth(), getHeight(), getWidth()/20, getHeight()/20); // corner radii = 5%
 		
 		for (Tile[] row: grid) {
 			for (Tile tile: row) {
 				tile.draw(g2d);
 			}
 		}
+
+		g.drawImage(image, 0, 0, null);
+		g2d.dispose();
 	}
 
 }

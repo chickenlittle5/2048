@@ -3,73 +3,69 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class Game extends JFrame implements KeyListener {
-	private static final int frameSize = 800;
-	private static final Color frameColor = new Color(250,248,239);
+	private static final int FRAME_SIZE = 800;
+	private static final Color FRAME_COLOR = new Color(250,248,239);
 	
 	private Grid grid;
+	private ScorePanel score;
 	private boolean playing;
 	
 	public Game() {
 		setTitle("2048");
-		setSize(frameSize, frameSize);
+		setSize(FRAME_SIZE, FRAME_SIZE);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		getContentPane().setBackground(frameColor);
+		getContentPane().setBackground(FRAME_COLOR);
 		
-		grid = new Grid(frameSize * 5/8);
+		grid = new Grid(FRAME_SIZE * 5/8);
+		grid.setBackground(FRAME_COLOR);
+		score = new ScorePanel(FRAME_SIZE * 1/7);
+		score.setBackground(FRAME_COLOR);
 
 		add(Box.createVerticalGlue());
+		add(score);
 		add(Box.createVerticalGlue());
 		add(Box.createVerticalGlue());
 		add(grid);
 		add(Box.createVerticalGlue());
 
+		playing = true;
 		addKeyListener(this);
-		
 	}
 	
-	//Spawns a random block every turn but also checks if there is no block in the spot
-		public void spawn () {
-			int x1 = (int)(Math.random()*4);
-			int y1 = (int)(Math.random()*4);
-			Tile [][] board = grid.getGrid();
-			boolean full = true;
-			for(int r = 0; r < 4; r++) {
-				for (int c = 0; c<4;c++) {
-					if (board[r][c].getValue() == 0) full = false;
-				}
-			}
-			if(!full) {
-				while (board[x1][y1].getValue() != 0) {
-					 x1 = (int)(Math.random()*4);
-					 y1 = (int)(Math.random()*4);
-				}
-				System.out.println(x1 + " " + y1);
-				grid.setGrid(2, x1, y1);
-			}
-			
-			
-			grid.repaint();
-			
-		}
-
 	public void keyPressed(KeyEvent e) {
-		//if (playing) {}
+		if (!playing)
+			return;
+
+		String direction;
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_W) {
-			System.out.println("W");
+			direction = "UP";
 		} else if (key == KeyEvent.VK_A) {
-			System.out.println("A");
+			direction = "LEFT";
 		} else if (key == KeyEvent.VK_S) {
-			System.out.println("S");
+			direction = "DOWN";
 		} else if (key == KeyEvent.VK_D) {
-			System.out.println("D");
+			direction = "RIGHT";
+		} else {
+			return;
+		}
+
+		int[] scoreDiff = grid.shiftTiles(direction);
+		// if merged or shifted
+		if (scoreDiff[0] > 0 || scoreDiff[1] > 0) {
+			score.add(scoreDiff[0]);
+			if (grid.spawn())
+				grid.repaint();
+		}
+		// no merge or shift + can't move = lose
+		else if (!grid.canMove()) {
+			playing = false;
 		}
 	}
 
 	public void keyReleased(KeyEvent e) {}
 	public void keyTyped(KeyEvent e) {}
-	
 }

@@ -1,23 +1,23 @@
 import java.awt.*;
 
 public class Tile {
-	private static final Color[] colors = {
-		new Color(204,192,179), // default color
-		new Color(238,228,218), // 2
-		new Color(237,224,200), // 4
-		new Color(242,177,121), // 8
-		new Color(245,149,99), // 16
-		new Color(246,124,95), // 32
-		new Color(246,94,59), // 64
-		new Color(237,207,114), // 128
-		new Color(237,204,97), // 256
-		new Color(237,200,80,255), // 512
-		new Color(237,197,63,255), // 1024
-		new Color(237,194,46,255), // 2048
-		new Color(62,57,51) // >2048
+	private static final Color[] TILE_COLORS = {
+		new Color(204,192,179), 	// default color
+		new Color(238,228,218), 	// 2
+		new Color(237,224,200), 	// 4
+		new Color(242,177,121), 	// 8
+		new Color(245,149,99), 		// 16
+		new Color(246,124,95), 		// 32
+		new Color(246,94,59), 		// 64
+		new Color(237,207,114), 	// 128
+		new Color(237,204,97), 		// 256
+		new Color(237,200,80,255), 	// 512
+		new Color(237,197,63,255), 	// 1024
+		new Color(237,194,46,255), 	// 2048
+		new Color(62,57,51) 		// > 2048
 	};
-	private static final Color[] textColors = {
-		new Color(119, 110, 101), // value <= 4
+	private static final Color[] TEXT_COLORS = {
+		new Color(119, 110, 101), 	// value <= 4
 		new Color(249, 246, 242)
 	};
 	
@@ -37,8 +37,7 @@ public class Tile {
 	}
 	
 	public Tile(int value, int x, int y, int size) {
-		int[] rand = {0,2,8,16,512,2048,4096};
-		setValue(rand[(int)(Math.random()*rand.length)]);
+		setValue(value);
 		this.x = x;
 		this.y = y;
 		this.size = size;
@@ -66,8 +65,19 @@ public class Tile {
 	
 	public void setColor() {
 		int power = getPower();
-		color = power < colors.length ? colors[power] : colors[colors.length-1];
-		textColor = power <= 2 ? textColors[0] : textColors[1];
+		color = power < TILE_COLORS.length ? TILE_COLORS[power] : TILE_COLORS[TILE_COLORS.length-1];
+		textColor = power <= 2 ? TEXT_COLORS[0] : TEXT_COLORS[1];
+	}
+
+	public void swap(Tile t) {
+		int temp = value;
+		setValue(t.getValue());
+		t.setValue(temp);
+	}
+
+	public void merge(Tile t) {
+		setValue(value*2);
+		t.setValue(0);
 	}
 	
 	public void draw(Graphics2D g2d) {
@@ -76,11 +86,13 @@ public class Tile {
 		g2d.drawRoundRect(x, y, size, size, size/5, size/5);
 		
 		if (value > 0) {
-			Font f = new Font("Helvetica", Font.BOLD, size*1/2 - (toString().length()-1)*3); // smaller for larger numbers
+			String text = toString();
+			Font f = new Font("Helvetica", Font.BOLD, size*1/2 - (text.length()-1)*3); // smaller font for larger numbers
 			FontMetrics fm = g2d.getFontMetrics(f);
+			
 			g2d.setFont(f);
 			g2d.setColor(textColor);
-			g2d.drawString(toString(), x + (size - fm.stringWidth(toString()))/2, fm.getAscent()*6/5 + y + (size - fm.getHeight())/2);
+			g2d.drawString(text, x + (size - fm.stringWidth(text))/2, fm.getAscent() + y + (size - fm.getHeight())/2);
 		}
 	}
 
