@@ -48,17 +48,27 @@ public class Tile {
 		this.y = y;
 		this.size = size;
 	}
-	
+   /**
+     * Returns value of Tile object 
+     * @author - Kevin Tsoi
+     * @return value - number value of tile
+     */	
 	public int getValue() {
 		return value;
 	}
-	
+   /**
+     * Sets the value of Tile object
+     * @author - Kevin Tsoi
+     * @param value - number value of tile
+     */	
 	public void setValue(int value) {
 		this.value = value;
 		setColor();
 	}
-	
-	//Sets a random value of either 2 or 4
+   /**
+     * Sets a random value of 2 or 4 for Grid use
+     * @author - Kevin Tsoi
+     */	
 	public void setRandom() {
 		int[] rand = {2,4};
 		setValue(rand[(int)(Math.random()*rand.length)]);
