@@ -35,7 +35,13 @@ public class Tile {
 			return 0;
 		return 1 + logBase2(value/2);
 	}
-	
+  /**
+    * Constructor for the Tile object 
+    * @author - Kevin Tsoi
+    * @param x - x location on Grid
+    * @param y - y location on Grid
+    * @param size - size of tile
+    */
 	public Tile(int value, int x, int y, int size) {
 		setValue(value);
 		this.x = x;
