@@ -43,10 +43,6 @@ public class Tile {
 		this.size = size;
 	}
 	
-	public int getPower() {
-		return logBase2(value);
-	}
-	
 	public int getValue() {
 		return value;
 	}
@@ -64,7 +60,7 @@ public class Tile {
 	}
 	
 	public void setColor() {
-		int power = getPower();
+		int power = logBase2(value);
 		color = power < TILE_COLORS.length ? TILE_COLORS[power] : TILE_COLORS[TILE_COLORS.length-1];
 		textColor = power <= 2 ? TEXT_COLORS[0] : TEXT_COLORS[1];
 	}
