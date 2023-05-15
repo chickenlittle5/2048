@@ -1,7 +1,7 @@
 import java.awt.*;
 
 /**
- * Represents a tile in a game.
+ * Represents a tile in the game.
  */
 public class Tile {
     private static final Color[] TILE_COLORS = {
