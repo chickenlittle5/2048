@@ -2,137 +2,160 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+/**
+ * The Game class represents the main game window that extends JFrame and implements KeyListener.
+ * It manages the game components, such as the grid, score, and game information.
+ */
 public class Game extends JFrame implements KeyListener {
-	private static final int FRAME_SIZE = 800;
-	private static final Color FRAME_COLOR = new Color(250,248,239);
-	private static final Color TEXT_COLOR = new Color(119,110,101);
-	
-	private GridPanel grid;
-	private ScorePanel score;
+    private static final int FRAME_SIZE = 800;
+    private static final Color FRAME_COLOR = new Color(250, 248, 239);
+    private static final Color TEXT_COLOR = new Color(119, 110, 101);
 
-	private JLabel info;
-	private boolean won;
-	private boolean playing;
-	
-	public Game() {
-		setSize(FRAME_SIZE, FRAME_SIZE);
-		setResizable(false);
-		setLocationRelativeTo(null);
-		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		getContentPane().setBackground(FRAME_COLOR);
-		
-		JLabel title = new JLabel("2048");
-		title.setForeground(TEXT_COLOR);
-		title.setFont(new Font("Helvetica", Font.BOLD, 92));
+    private GridPanel grid;
+    private ScorePanel score;
 
-		score = new ScorePanel(FRAME_SIZE * 1/7);
-		score.setBackground(FRAME_COLOR);
+    private JLabel info;
+    private boolean won;
+    private boolean playing;
 
-		info = new JLabel("Use WASD to join tiles and reach 2048!");
-		info.setForeground(TEXT_COLOR);
-		info.setFont(new Font("Helvetica", Font.BOLD, 22));
+    /**
+     * Constructs a new instance of the Game class.
+     */
+    public Game() {
+        setSize(FRAME_SIZE, FRAME_SIZE);
+        setResizable(false);
+        setLocationRelativeTo(null);
+        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        getContentPane().setBackground(FRAME_COLOR);
 
-		JButton newGame = new JButton("New Game");
-		Dimension dimension = new Dimension(FRAME_SIZE*1/6, FRAME_SIZE*1/20);
-		newGame.setPreferredSize(dimension);
-		newGame.setMinimumSize(dimension);
-		newGame.setMaximumSize(dimension);
-		newGame.setBackground(TEXT_COLOR);
-		newGame.setForeground(FRAME_COLOR);
-		newGame.setFocusable(false);
-		newGame.setFont(new Font("Helvetica", Font.BOLD, 16));
-		newGame.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				reset();
-			}
-		});
-		
-		grid = new GridPanel(FRAME_SIZE * 5/8);
-		grid.setBackground(FRAME_COLOR);
+        JLabel title = new JLabel("2048");
+        title.setForeground(TEXT_COLOR);
+        title.setFont(new Font("Helvetica", Font.BOLD, 92));
 
-		JPanel panel1 = new JPanel();
-		panel1.setBackground(FRAME_COLOR);
-		panel1.setLayout(new BoxLayout(panel1, BoxLayout.X_AXIS));
-		panel1.add(Box.createHorizontalGlue());
-		panel1.add(title);
-		panel1.add(Box.createHorizontalGlue());
-		panel1.add(Box.createHorizontalGlue());
-		panel1.add(score);
-		panel1.add(Box.createHorizontalGlue());
+        score = new ScorePanel(FRAME_SIZE * 1 / 7);
+        score.setBackground(FRAME_COLOR);
 
-		JPanel panel2 = new JPanel();
-		panel2.setBackground(FRAME_COLOR);
-		panel2.setLayout(new BoxLayout(panel2, BoxLayout.X_AXIS));
-		panel2.add(Box.createHorizontalGlue());
-		panel2.add(info);
-		panel2.add(Box.createHorizontalGlue());
-		panel2.add(newGame);
-		panel2.add(Box.createHorizontalGlue());
+        info = new JLabel("Use WASD to join tiles and reach 2048!");
+        info.setForeground(TEXT_COLOR);
+        info.setFont(new Font("Helvetica", Font.BOLD, 22));
 
-		add(Box.createVerticalGlue());
-		add(panel1);
-		add(Box.createVerticalGlue());
-		add(panel2);
-		add(Box.createVerticalGlue());
-		add(grid);
-		add(Box.createVerticalGlue());
+        JButton newGame = new JButton("New Game");
+        Dimension dimension = new Dimension(FRAME_SIZE * 1 / 6, FRAME_SIZE * 1 / 20);
+        newGame.setPreferredSize(dimension);
+        newGame.setMinimumSize(dimension);
+        newGame.setMaximumSize(dimension);
+        newGame.setBackground(TEXT_COLOR);
+        newGame.setForeground(FRAME_COLOR);
+        newGame.setFocusable(false);
+        newGame.setFont(new Font("Helvetica", Font.BOLD, 16));
+        newGame.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                reset();
+            }
+        });
 
-		won = false;
-		playing = true;
-		addKeyListener(this);
-	}
-	
-	public void reset() {
-		Game g = new Game();
-		g.setVisible(true);
-		this.dispose();
-	}
+        grid = new GridPanel(FRAME_SIZE * 5 / 8);
+        grid.setBackground(FRAME_COLOR);
 
-	public void win() {
-		info.setText("You win!");
-	}
+        JPanel panel1 = new JPanel();
+        panel1.setBackground(FRAME_COLOR);
+        panel1.setLayout(new BoxLayout(panel1, BoxLayout.X_AXIS));
+        panel1.add(Box.createHorizontalGlue());
+        panel1.add(title);
+        panel1.add(Box.createHorizontalGlue());
+        panel1.add(Box.createHorizontalGlue());
+        panel1.add(score);
+        panel1.add(Box.createHorizontalGlue());
 
-	public void lose() {
-		info.setText("You lost :(");
-	}
+        JPanel panel2 = new JPanel();
+        panel2.setBackground(FRAME_COLOR);
+        panel2.setLayout(new BoxLayout(panel2, BoxLayout.X_AXIS));
+        panel2.add(Box.createHorizontalGlue());
+        panel2.add(info);
+        panel2.add(Box.createHorizontalGlue());
+        panel2.add(newGame);
+        panel2.add(Box.createHorizontalGlue());
 
-	public void keyPressed(KeyEvent e) {
-		if (!playing)
-			return;
+        add(Box.createVerticalGlue());
+        add(panel1);
+        add(Box.createVerticalGlue());
+        add(panel2);
+        add(Box.createVerticalGlue());
+        add(grid);
+        add(Box.createVerticalGlue());
 
-		String direction;
-		int key = e.getKeyCode();
-		if (key == KeyEvent.VK_W) {
-			direction = "UP";
-		} else if (key == KeyEvent.VK_A) {
-			direction = "LEFT";
-		} else if (key == KeyEvent.VK_S) {
-			direction = "DOWN";
-		} else if (key == KeyEvent.VK_D) {
-			direction = "RIGHT";
-		} else {
-			return;
-		}
+        won = false;
+        playing = true;
+        addKeyListener(this);
+    }
 
-		int[] scoreDiff = grid.shiftTiles(direction);
-		// if merged or shifted
-		if (scoreDiff[0] > 0 || scoreDiff[1] > 0) {
-			score.add(scoreDiff[0]);
-			if (grid.spawn())
-				grid.repaint();
-			if (scoreDiff[0] >= 2048 && !won) {
-				won = true;
-				win();
-			}
-		}
-		// no merge or shift + can't move = lose
-		else if (!grid.canMove()) {
-			playing = false;
-			lose();
-		}
-	}
+    /**
+     * Resets the game by creating a new instance of the Game class and disposing the current window.
+     */
+    public void reset() {
+        Game g = new Game();
+        g.setVisible(true);
+        this.dispose();
+    }
 
-	public void keyReleased(KeyEvent e) {}
-	public void keyTyped(KeyEvent e) {}
+    /**
+     * Displays a message indicating that the player has won the game.
+     */
+    public void win() {
+        info.setText("You win!");
+    }
+
+    /**
+     * Displays a message indicating that the player has lost the game.
+    */
+    public void lose() {
+        info.setText("You lost :(");
+    }
+
+    /**
+     * Handles the key pressed event.
+     * @param e The KeyEvent object representing the key event.
+     */
+    public void keyPressed(KeyEvent e) {
+        if (!playing)
+            return;
+
+        String direction;
+        int key = e.getKeyCode();
+        if (key == KeyEvent.VK_W) {
+            direction = "UP";
+        } else if (key == KeyEvent.VK_A) {
+            direction = "LEFT";
+        } else if (key == KeyEvent.VK_S) {
+            direction = "DOWN";
+        } else if (key == KeyEvent.VK_D) {
+            direction = "RIGHT";
+        } else {
+            return;
+        }
+
+        int[] scoreDiff = grid.shiftTiles(direction);
+        // if merged or shifted
+        if (scoreDiff[0] > 0 || scoreDiff[1] > 0) {
+            score.add(scoreDiff[0]);
+            if (grid.spawn())
+                grid.repaint();
+            if (scoreDiff[0] >= 2048 && !won) {
+                won = true;
+                win();
+            }
+        }
+        // no merge or shift + can't move = lose
+        else if (!grid.canMove()) {
+            playing = false;
+            lose();
+        }
+    }
+
+    public void keyReleased(KeyEvent e) {
+    }
+
+    public void keyTyped(KeyEvent e) {
+    }
 }
