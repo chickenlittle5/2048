@@ -123,13 +123,13 @@ public class Game extends JFrame implements KeyListener {
 
         String direction;
         int key = e.getKeyCode();
-        if (key == KeyEvent.VK_W) {
+        if (key == KeyEvent.VK_W || key == 38) {
             direction = "UP";
-        } else if (key == KeyEvent.VK_A) {
+        } else if (key == KeyEvent.VK_A || key == 37) {
             direction = "LEFT";
-        } else if (key == KeyEvent.VK_S) {
+        } else if (key == KeyEvent.VK_S || key == 40) {
             direction = "DOWN";
-        } else if (key == KeyEvent.VK_D) {
+        } else if (key == KeyEvent.VK_D || key = 39) {
             direction = "RIGHT";
         } else {
             return;
