@@ -16,6 +16,7 @@ public class GridPanel extends JPanel {
     /**
      * Constructs a GridPanel object with the specified size.
      * @param size the size of the panel
+     * @author - Kevin Tsoi
      */
     public GridPanel(int size) {
         int tileSize = size / (GRID_SEGMENTS + 1);
@@ -61,6 +62,7 @@ public class GridPanel extends JPanel {
      * Reverses the order of the elements in the given ArrayList.
      * @param array the ArrayList to reverse
      * @return the reversed ArrayList
+     * @author - Kevin Tsoi
      */
     public ArrayList<Tile> reverse(ArrayList<Tile> array) {
         int i = 0;
