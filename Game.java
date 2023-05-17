@@ -136,6 +136,7 @@ public class Game extends JFrame implements KeyListener {
     /**
      * Handles the key pressed event.
      * @param e The KeyEvent object representing the key event.
+     * @author - Kevin Tsoi
      */
     public void keyPressed(KeyEvent e) {
         if (!playing)
