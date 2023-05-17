@@ -8,16 +8,30 @@ public class ScorePanel extends JPanel {
 	private static final Color SCORE_COLOR = new Color(187,173,160);
 	
 	private int score;
+	private boolean won;
 	private BufferedImage image;
 	
 	public ScorePanel(int size) {
 		score = 0;
+		won = false;
 		image = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
 
 		Dimension dimension = new Dimension(size, size);
 		setMinimumSize(dimension);
 		setMaximumSize(dimension);
 		setPreferredSize(dimension);
+	}
+
+	public int getScore() {
+		return score;
+	}
+	
+	public boolean getWon() {
+		return won;
+	}
+
+	public void setWon(boolean b) {
+		won = b;
 	}
 
 	public void add(int s) {

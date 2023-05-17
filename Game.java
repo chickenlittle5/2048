@@ -2,6 +2,10 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+/**
+ * The Game class represents the main game window that extends JFrame and implements KeyListener.
+ * It manages the game components, such as the grid, score, and game information.
+ */
 public class Game extends JFrame implements KeyListener {
 	private static final int FRAME_SIZE = 800;
 	private static final Color FRAME_COLOR = new Color(250,248,239);
@@ -9,9 +13,9 @@ public class Game extends JFrame implements KeyListener {
 	
 	private GridPanel grid;
 	private ScorePanel score;
+	private Leaderboard leaderboard;
 
 	private JLabel info;
-	private boolean won;
 	private boolean playing;
 	
 	public Game() {
@@ -21,23 +25,21 @@ public class Game extends JFrame implements KeyListener {
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setBackground(FRAME_COLOR);
+
+		score = new ScorePanel(FRAME_SIZE * 1/7);
+		score.setBackground(FRAME_COLOR);
+		leaderboard = new Leaderboard(score);
 		
 		JLabel title = new JLabel("2048");
 		title.setForeground(TEXT_COLOR);
 		title.setFont(new Font("Helvetica", Font.BOLD, 92));
-
-		score = new ScorePanel(FRAME_SIZE * 1/7);
-		score.setBackground(FRAME_COLOR);
-
-		info = new JLabel("Use WASD to join tiles and reach 2048!");
-		info.setForeground(TEXT_COLOR);
-		info.setFont(new Font("Helvetica", Font.BOLD, 22));
 
 		JButton newGame = new JButton("New Game");
 		Dimension dimension = new Dimension(FRAME_SIZE*1/6, FRAME_SIZE*1/20);
 		newGame.setPreferredSize(dimension);
 		newGame.setMinimumSize(dimension);
 		newGame.setMaximumSize(dimension);
+		newGame.setOpaque(true);
 		newGame.setBackground(TEXT_COLOR);
 		newGame.setForeground(FRAME_COLOR);
 		newGame.setFocusable(false);
@@ -47,9 +49,22 @@ public class Game extends JFrame implements KeyListener {
 				reset();
 			}
 		});
-		
-		grid = new GridPanel(FRAME_SIZE * 5/8);
-		grid.setBackground(FRAME_COLOR);
+
+		JButton showLeaderboard = new JButton("Leaderboard");
+		dimension = new Dimension(FRAME_SIZE*1/6, FRAME_SIZE*1/20);
+		showLeaderboard.setPreferredSize(dimension);
+		showLeaderboard.setMinimumSize(dimension);
+		showLeaderboard.setMaximumSize(dimension);
+		showLeaderboard.setOpaque(true);
+		showLeaderboard.setBackground(TEXT_COLOR);
+		showLeaderboard.setForeground(FRAME_COLOR);
+		showLeaderboard.setFocusable(false);
+		showLeaderboard.setFont(new Font("Helvetica", Font.BOLD, 16));
+		showLeaderboard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				leaderboard.setVisible(true);
+			}
+		});
 
 		JPanel panel1 = new JPanel();
 		panel1.setBackground(FRAME_COLOR);
@@ -61,6 +76,10 @@ public class Game extends JFrame implements KeyListener {
 		panel1.add(score);
 		panel1.add(Box.createHorizontalGlue());
 
+		info = new JLabel("Use arrows keys to reach 2048!");
+		info.setForeground(TEXT_COLOR);
+		info.setFont(new Font("Helvetica", Font.BOLD, 22));
+
 		JPanel panel2 = new JPanel();
 		panel2.setBackground(FRAME_COLOR);
 		panel2.setLayout(new BoxLayout(panel2, BoxLayout.X_AXIS));
@@ -68,7 +87,12 @@ public class Game extends JFrame implements KeyListener {
 		panel2.add(info);
 		panel2.add(Box.createHorizontalGlue());
 		panel2.add(newGame);
+		panel2.add(Box.createRigidArea(new Dimension(10, 0)));
+		panel2.add(showLeaderboard);
 		panel2.add(Box.createHorizontalGlue());
+
+		grid = new GridPanel(FRAME_SIZE * 5/8);
+		grid.setBackground(FRAME_COLOR);
 
 		add(Box.createVerticalGlue());
 		add(panel1);
@@ -78,7 +102,6 @@ public class Game extends JFrame implements KeyListener {
 		add(grid);
 		add(Box.createVerticalGlue());
 
-		won = false;
 		playing = true;
 		addKeyListener(this);
 	}
@@ -86,6 +109,7 @@ public class Game extends JFrame implements KeyListener {
 	public void reset() {
 		Game g = new Game();
 		g.setVisible(true);
+		leaderboard.dispose();
 		this.dispose();
 	}
 
@@ -103,13 +127,13 @@ public class Game extends JFrame implements KeyListener {
 
 		String direction;
 		int key = e.getKeyCode();
-		if (key == KeyEvent.VK_W) {
+		if (key == KeyEvent.VK_W || key == 38) {
 			direction = "UP";
-		} else if (key == KeyEvent.VK_A) {
+		} else if (key == KeyEvent.VK_A || key == 37) {
 			direction = "LEFT";
-		} else if (key == KeyEvent.VK_S) {
+		} else if (key == KeyEvent.VK_S || key == 40) {
 			direction = "DOWN";
-		} else if (key == KeyEvent.VK_D) {
+		} else if (key == KeyEvent.VK_D || key == 39) {
 			direction = "RIGHT";
 		} else {
 			return;
@@ -121,8 +145,8 @@ public class Game extends JFrame implements KeyListener {
 			score.add(scoreDiff[0]);
 			if (grid.spawn())
 				grid.repaint();
-			if (scoreDiff[0] >= 2048 && !won) {
-				won = true;
+			if (scoreDiff[0] >= 2048 && !score.getWon()) {
+				score.setWon(true);
 				win();
 			}
 		}
