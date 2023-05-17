@@ -37,6 +37,7 @@ public class Tile {
      * Calculates the logarithm base 2 of the given value.
      * @param value the value to calculate the logarithm for
      * @return the logarithm base 2 of the value
+     * @author - Kevin Tsoi
      */
     public static int logBase2(int value) {
         if (value <= 1)
