@@ -5,6 +5,7 @@ import javax.swing.*;
 /**
  * The Game class represents the main game window that extends JFrame and implements KeyListener.
  * It manages the game components, such as the grid, score, and game information.
+ * @author - Kevin Tsoi
  */
 public class Game extends JFrame implements KeyListener {
     private static final int FRAME_SIZE = 800;
@@ -20,6 +21,7 @@ public class Game extends JFrame implements KeyListener {
     
     /**
      * Constructs a new instance of the Game class.
+     * @author - Kevin Tsoi
      */
     public Game() {
         setSize(FRAME_SIZE, FRAME_SIZE);
@@ -111,6 +113,7 @@ public class Game extends JFrame implements KeyListener {
     
     /**
      * Resets the game by creating a new instance of the Game class and disposing the current window.
+     * @author - Duy Nguyen
      */
     public void reset() {
         Game g = new Game();
@@ -121,6 +124,7 @@ public class Game extends JFrame implements KeyListener {
 
     /**
      * Displays a message indicating that the player has won the game.
+     * @author - Duy Nguyen
      */
     public void win() {
         info.setText("You win!");
@@ -128,7 +132,8 @@ public class Game extends JFrame implements KeyListener {
 
     /**
      * Displays a message indicating that the player has lost the game.
-    */
+     * @author - Duy Nguyen
+     */
     public void lose() {
         info.setText("You lost :(");
     }
