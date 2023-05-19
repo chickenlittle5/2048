@@ -14,6 +14,11 @@ public class ScorePanel extends JPanel {
     private boolean won;
     private BufferedImage image;
     
+    /**
+     * Constructs a ScorePanel object with the specified size.
+     * @param size the size of the panel
+     * @author - Kevin Tsoi
+     */
     public ScorePanel(int size) {
         score = 0;
         won = false;
@@ -28,6 +33,7 @@ public class ScorePanel extends JPanel {
     /**
      * Gets the current score.
      * @return the score
+     * @author - Matthew Cendana
      */
     public int getScore() {
         return score;
@@ -36,6 +42,7 @@ public class ScorePanel extends JPanel {
     /**
      * Gets if the game has been won.
      * @return true if the game is won, otherwise false
+     * @author - Navdeep Singh
      */
     public boolean getWon() {
         return won;
@@ -44,6 +51,7 @@ public class ScorePanel extends JPanel {
     /**
      * Sets whether or not the game was won.
      * @param b true if the game is won, false otherwise
+     * @author - Navdeep Singh
      */
     public void setWon(boolean b) {
         won = b;
@@ -52,6 +60,7 @@ public class ScorePanel extends JPanel {
     /**
      * Adds the specified value to the score and repaints the panel.
      * @param s the value to add to the score
+     * @author - Matthew Cendana
      */
     public void add(int s) {
         score += s;
@@ -61,6 +70,7 @@ public class ScorePanel extends JPanel {
     /**
      * Paints the component and renders the score panel.
      * @param g the graphics context
+     * @author - Kevin Tsoi
      */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
