@@ -2,6 +2,7 @@ import java.awt.*;
 
 /**
  * Represents a tile in the game.
+ * @author - Ethan Tran
  */
 public class Tile {
     private static final Color[] TILE_COLORS = {
@@ -51,6 +52,7 @@ public class Tile {
      * @param x the x-coordinate of the tile
      * @param y the y-coordinate of the tile
      * @param size the size of the tile
+     * @author - Navdeep Singh
      */
     public Tile(int value, int x, int y, int size) {
         setValue(value);
@@ -62,6 +64,7 @@ public class Tile {
     /**
      * Retrieves the value of the tile.
      * @return the value of the tile
+     * @author - Navdeep Singh
      */
     public int getValue() {
         return value;
@@ -70,6 +73,7 @@ public class Tile {
     /**
      * Sets the value of the tile and updates the color accordingly.
      * @param value the value to set for the tile
+     * @author - Navdeep Singh
      */
     public void setValue(int value) {
         this.value = value;
@@ -78,6 +82,7 @@ public class Tile {
     
     /**
      * Sets a random value for the tile, either 2 or 4.
+     * @author - Navdeep Singh
      */
     public void setRandom() {
         int[] rand = {2,4};
@@ -86,6 +91,7 @@ public class Tile {
     
     /**
      * Sets the color of the tile based on its value.
+     * @author - Kevin Tsoi
      */
     public void setColor() {
         int power = logBase2(value);
@@ -96,6 +102,7 @@ public class Tile {
     /**
      * Swaps the value of this tile with another tile.
      * @param t the tile to swap values with
+     * @author - Matthew Cendana
      */
     public void swap(Tile t) {
         int temp = value;
@@ -106,6 +113,7 @@ public class Tile {
     /**
      * Merges this tile with another tile by doubling its value and setting the other tile's value to 0.
      * @param t the tile to merge with
+     * @author - Matthew Cendana
      */
     public void merge(Tile t) {
         setValue(value * 2);
@@ -115,6 +123,7 @@ public class Tile {
     /**
      * Draws the tile on the graphics context.
      * @param g2d the graphics context to draw on
+     * @author Matthew Cendana
      */
     public void draw(Graphics2D g2d) {
         g2d.setColor(color);
@@ -135,6 +144,7 @@ public class Tile {
     /**
      * Converts the value of the tile to its string representation.
      * @return the string representation of the tile's value
+     * @author - Duy Nguyen
      */
     public String toString() {
         return "" + value;
