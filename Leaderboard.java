@@ -22,6 +22,7 @@ public class Leaderboard extends JFrame {
     /**
      * Constructs a Leaderboard object.
      * @param score The ScorePanel object representing the player's score.
+     * @author - Duy Nguyen
      */
     public Leaderboard(ScorePanel score) {
         this.score = score;
@@ -104,6 +105,7 @@ public class Leaderboard extends JFrame {
     /**
      * Adds the player's score to the leaderboard.
      * @param username The username of the player.
+     * @author - Ethan Tran
      */
     public void add(String username) {
         try {
@@ -122,6 +124,7 @@ public class Leaderboard extends JFrame {
 
     /**
      * Loads the leaderboard data from the file and updates the leaderboard display.
+     * @author - Kevin Tsoi
      */
     public void load() {
         leaderboard = new ArrayList<Score>();
@@ -159,6 +162,7 @@ public class Leaderboard extends JFrame {
 
     /**
      * Performs an insertion sort on the leaderboard based on the scores.
+     * @author - Matthew Cendana
      */
     public void insertionSort() {
         for (int i = 1; i < leaderboard.size(); i++) {
@@ -175,6 +179,7 @@ public class Leaderboard extends JFrame {
 
 /**
  * The Score class represents a player's score in the leaderboard.
+ * @author Navdeep Singh
  */
 class Score {
     private String username;
@@ -184,6 +189,7 @@ class Score {
      * Constructs a Score object with the specified username and score.
      * @param username The username of the player.
      * @param score The score achieved by the player.
+     * @author - Matthew Cendana
      */
     public Score(String username, int score) {
         if (username.length() > 10)
@@ -195,6 +201,7 @@ class Score {
     /**
      * Returns the color associated with the score.
      * @return The color associated with the score.
+     * @author - Matthew Cendana
      */
     public Color getColor() {
         return new Color(119,110,101);
@@ -203,6 +210,7 @@ class Score {
     /**
      * Returns the score.
      * @return The score.
+     * @author - Matthew Cendana
      */
     public int getScore() {
         return score;
@@ -212,6 +220,7 @@ class Score {
      * Creates and adds the labels representing the score to the leaderboard grid.
      * @param position The position/rank of the score.
      * @param leaderboardGrid The JPanel representing the leaderboard grid.
+     * @author - Ethan Tran
      */
     public void createLabels(int position, JPanel leaderboardGrid) {
         JLabel[] labels = {new JLabel("" + position), new JLabel(username), new JLabel("" + score)};
@@ -232,6 +241,7 @@ class WinScore extends Score {
      * Constructs a WinScore object with the specified username and score.
      * @param username The username of the player.
      * @param score The score achieved by the player.
+     * @author - Navdeep Singh
      */
     public WinScore(String username, int score) {
         super(username, score);
@@ -240,6 +250,7 @@ class WinScore extends Score {
     /**
      * Returns the color associated with the winning score.
      * @return The color associated with the winning score.
+     * @author - Matthew Cendana
      */
     public Color getColor() {
         return new Color(237,194,46,255);
