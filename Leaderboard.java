@@ -4,6 +4,9 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+/**
+ * The Leaderboard class represents the leaderboard window in the game.
+ */
 public class Leaderboard extends JFrame {
     private static final int FRAME_SIZE = 600;
     private static final Color FRAME_COLOR = new Color(250,248,239);
@@ -15,7 +18,11 @@ public class Leaderboard extends JFrame {
     private ScorePanel score;
     private JPanel leaderboardGrid;
     private JTextField username;
-    
+
+    /**
+     * Constructs a Leaderboard object.
+     * @param score The ScorePanel object representing the player's score.
+     */
     public Leaderboard(ScorePanel score) {
         this.score = score;
 
@@ -25,12 +32,12 @@ public class Leaderboard extends JFrame {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         getContentPane().setBackground(FRAME_COLOR);
-        
+
         JLabel title = new JLabel("Leaderboard");
         title.setForeground(TEXT_COLOR);
         title.setFont(new Font("Helvetica", Font.BOLD, 46));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+
         leaderboardGrid = new JPanel();
         leaderboardGrid.setBackground(FRAME_COLOR);
         leaderboardGrid.setLayout(new GridLayout(0, 3));
@@ -94,6 +101,10 @@ public class Leaderboard extends JFrame {
         add(Box.createVerticalGlue());
     }
 
+    /**
+     * Adds the player's score to the leaderboard.
+     * @param username The username of the player.
+     */
     public void add(String username) {
         try {
             FileWriter writer = new FileWriter("leaderboard.txt", true);
@@ -109,6 +120,9 @@ public class Leaderboard extends JFrame {
         } catch (IOException e) { }
     }
 
+    /**
+     * Loads the leaderboard data from the file and updates the leaderboard display.
+     */
     public void load() {
         leaderboard = new ArrayList<Score>();
         try {
@@ -143,6 +157,9 @@ public class Leaderboard extends JFrame {
         }
     }
 
+    /**
+     * Performs an insertion sort on the leaderboard based on the scores.
+     */
     public void insertionSort() {
         for (int i = 1; i < leaderboard.size(); i++) {
             Score temp = leaderboard.get(i);
@@ -156,10 +173,18 @@ public class Leaderboard extends JFrame {
     }
 }
 
+/**
+ * The Score class represents a player's score in the leaderboard.
+ */
 class Score {
     private String username;
     private int score;
 
+    /**
+     * Constructs a Score object with the specified username and score.
+     * @param username The username of the player.
+     * @param score The score achieved by the player.
+     */
     public Score(String username, int score) {
         if (username.length() > 10)
             username = username.substring(0, 10);
@@ -167,14 +192,27 @@ class Score {
         this.score = score;
     }
 
+    /**
+     * Returns the color associated with the score.
+     * @return The color associated with the score.
+     */
     public Color getColor() {
         return new Color(119,110,101);
     }
 
+    /**
+     * Returns the score.
+     * @return The score.
+     */
     public int getScore() {
         return score;
     }
 
+    /**
+     * Creates and adds the labels representing the score to the leaderboard grid.
+     * @param position The position/rank of the score.
+     * @param leaderboardGrid The JPanel representing the leaderboard grid.
+     */
     public void createLabels(int position, JPanel leaderboardGrid) {
         JLabel[] labels = {new JLabel("" + position), new JLabel(username), new JLabel("" + score)};
         for (JLabel label: labels) {
@@ -186,11 +224,23 @@ class Score {
     }
 }
 
+/**
+ * The WinScore class represents a winning score in the leaderboard.
+ */
 class WinScore extends Score {
+    /**
+     * Constructs a WinScore object with the specified username and score.
+     * @param username The username of the player.
+     * @param score The score achieved by the player.
+     */
     public WinScore(String username, int score) {
         super(username, score);
     }
 
+    /**
+     * Returns the color associated with the winning score.
+     * @return The color associated with the winning score.
+     */
     public Color getColor() {
         return new Color(237,194,46,255);
     }
