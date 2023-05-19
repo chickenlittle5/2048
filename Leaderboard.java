@@ -97,8 +97,9 @@ public class Leaderboard extends JFrame {
     public void add(String username) {
         try {
             FileWriter writer = new FileWriter("leaderboard.txt", true);
-            while (username.indexOf(",") != -1) {
-                username = username.substring(0, username.indexOf(",")) + "_" + username.substring(username.indexOf(",")+1);
+            for (int i = 0; i < username.length(); i++) {
+                if (username.charAt(i) == ',')
+                    username = username.substring(0, i) + "_" + username.substring(i+1);
             }
             String text = username + "," + score.getScore() + "," + score.getWon();
             if (!lines.contains(text)) {
