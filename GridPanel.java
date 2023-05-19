@@ -40,6 +40,7 @@ public class GridPanel extends JPanel {
      * Retrieves a row from the grid as an ArrayList of Tile objects.
      * @param index the index of the row to retrieve
      * @return an ArrayList of Tile objects representing the row
+     * @author - Duy Nguyen
      */
     public ArrayList<Tile> getRow(int index) {
         return new ArrayList<Tile>(Arrays.asList(grid[index]));
@@ -49,6 +50,7 @@ public class GridPanel extends JPanel {
      * Retrieves a column from the grid as an ArrayList of Tile objects.
      * @param index the index of the column to retrieve
      * @return an ArrayList of Tile objects representing the column
+     * @author - Duy Nguyen
      */
     public ArrayList<Tile> getColumn(int index) {
         ArrayList<Tile> column = new ArrayList<Tile>();
@@ -78,6 +80,7 @@ public class GridPanel extends JPanel {
     /**
      * Checks if there is a valid move that can be made on the grid.
      * @return true if a valid move exists, false otherwise
+     * @author - Ethan Tran
      */
     public boolean canMove() {
         for (int r = 0; r < GRID_SEGMENTS; r++) {
@@ -93,6 +96,7 @@ public class GridPanel extends JPanel {
     /**
      * Spawns a new tile on the grid.
      * @return true if a tile was successfully spawned, false otherwise
+     * @author - Kevin Tsoi
      */
     public boolean spawn() {
         ArrayList<Tile> empty = new ArrayList<Tile>();
@@ -115,6 +119,7 @@ public class GridPanel extends JPanel {
      * Shifts the tiles in the grid in the specified direction.
      * @param direction the direction in which to shift the tiles ("UP", "DOWN", "LEFT", or "RIGHT")
      * @return an array containing the score and a flag indicating whether any tiles were moved
+     * @author - Kevin Tsoi
      */
     public int[] shiftTiles(String direction) {
         int score = 0;
@@ -185,6 +190,7 @@ public class GridPanel extends JPanel {
     /**
      * Paints the grid panel on the screen.
      * @param g the graphics context
+     * @author - Kevin Tsoi
      */    
     @Override
     public void paintComponent(Graphics g) {
